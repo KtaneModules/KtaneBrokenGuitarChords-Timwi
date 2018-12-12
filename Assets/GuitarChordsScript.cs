@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using guitarChords;
+using KModkit;
 using UnityEngine;
 
 public class GuitarChordsScript : MonoBehaviour
 {
     public KMBombInfo Bomb;
     public KMAudio Audio;
-    public Frets[] frets;
+    public Fret[] frets;
     public Material unselected;
     public Material selected;
     public KMSelectable playBut;
@@ -42,7 +42,7 @@ public class GuitarChordsScript : MonoBehaviour
     {
         for (int boolIndex = 0; boolIndex < frets.Length; ++boolIndex)
         {
-            if (frets[boolIndex].fretStatus != expectedIndices.Contains(boolIndex))
+            if (frets[boolIndex].Status != expectedIndices.Contains(boolIndex))
             {
                 return false;
             }
@@ -889,10 +889,10 @@ public class GuitarChordsScript : MonoBehaviour
     void Awake()
     {
         moduleId = moduleIdCounter++;
-        foreach (Frets fret in frets)
+        foreach (Fret fret in frets)
         {
-            Frets trueFret = fret;
-            fret.fretSelectables.OnInteract += delegate () { fretSelect(trueFret); return false; };
+            Fret trueFret = fret;
+            fret.Selectable.OnInteract += delegate () { fretSelect(trueFret); return false; };
         }
         playBut.OnInteract += delegate () { OnPlayBut(); return false; };
     }
@@ -908,20 +908,20 @@ public class GuitarChordsScript : MonoBehaviour
         StartCoroutine(level1Select());
     }
 
-    void fretSelect(Frets fret)
+    void fretSelect(Fret fret)
     {
-        fret.fretSelectables.AddInteractionPunch(.25f);
-        if (fret.fretObjects.sharedMaterial == unselected)
+        fret.Selectable.AddInteractionPunch(.25f);
+        if (fret.Renderer.sharedMaterial == unselected)
         {
-            fret.fretObjects.sharedMaterial = selected;
-            fret.fretStatus = true;
+            fret.Renderer.sharedMaterial = selected;
+            fret.Status = true;
             stringIndex = UnityEngine.Random.Range(0, 12);
             Audio.PlaySoundAtTransform(strings[stringIndex].name, transform);
         }
-        else if (fret.fretObjects.sharedMaterial == selected)
+        else if (fret.Renderer.sharedMaterial == selected)
         {
-            fret.fretObjects.sharedMaterial = unselected;
-            fret.fretStatus = false;
+            fret.Renderer.sharedMaterial = unselected;
+            fret.Status = false;
         }
     }
 
@@ -1113,10 +1113,10 @@ public class GuitarChordsScript : MonoBehaviour
         var match = Regex.Match(command, "^(?:play|submit|toggle) ([- 0-9]+|),([- 0-9]+|),([- 0-9]+|),([- 0-9]+|),([- 0-9]+|),([- 0-9]+|)$");
         if (!match.Success) yield break;
         List<KMSelectable> selectables = new List<KMSelectable>();
-        while (frets.Select(x => x.fretStatus).Contains(true))
+        while (frets.Select(x => x.Status).Contains(true))
         {
             yield return null;
-            yield return new KMSelectable[] { frets.First(x => x.fretStatus).fretSelectables };
+            yield return new KMSelectable[] { frets.First(x => x.Status).Selectable };
         }
         Debug.LogFormat("Test");
         for (int i = 1; i < match.Groups.Count; i++)
@@ -1129,7 +1129,7 @@ public class GuitarChordsScript : MonoBehaviour
                 yield return "sendtochaterror Selected capo is invalid. Please select a capo between 0 and 12.";
                 yield break;
             }
-            selectables.Add(frets[(6 - i) + result * 6].fretSelectables);
+            selectables.Add(frets[(6 - i) + result * 6].Selectable);
         }
         yield return null;
         var play = match.Groups[0].Value;
