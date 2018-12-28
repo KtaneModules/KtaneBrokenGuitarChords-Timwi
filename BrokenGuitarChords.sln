@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenGuitarChords", "BrokenGuitarChords.csproj", "{A395BC3B-53D1-620D-616E-502987927C5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokenGuitarChords.Editor", "BrokenGuitarChords.Editor.csproj", "{F6595BB7-9835-BBF9-1689-75D114124522}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A395BC3B-53D1-620D-616E-502987927C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A395BC3B-53D1-620D-616E-502987927C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A395BC3B-53D1-620D-616E-502987927C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A395BC3B-53D1-620D-616E-502987927C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6595BB7-9835-BBF9-1689-75D114124522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6595BB7-9835-BBF9-1689-75D114124522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6595BB7-9835-BBF9-1689-75D114124522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6595BB7-9835-BBF9-1689-75D114124522}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
