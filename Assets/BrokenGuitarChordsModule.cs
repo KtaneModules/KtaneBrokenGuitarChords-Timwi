@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -217,5 +218,50 @@ public class BrokenGuitarChordsModule : MonoBehaviour
         }
         kmsel.Add(PlayButton);
         return kmsel;
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        for (var str = 0; str < 6; str++)
+        {
+            if (_muteStatus[str])
+            {
+                MuteSelectables[str].OnInteract();
+                yield return new WaitForSeconds(.1f);
+            }
+        }
+
+        for (var fret = 0; fret < _fretStatus.Length; fret++)
+        {
+            if (_fretStatus[fret])
+            {
+                FretSelectables[fret].OnInteract();
+                yield return new WaitForSeconds(.1f);
+            }
+        }
+
+        var notesNeeded = _chordQuality.Semitones.ToList();
+        var curStr = 0;
+        while (notesNeeded.Count > 0)
+        {
+            if (curStr == _brokenString)
+                curStr++;
+            var fret = (notesNeeded[0] + _rootNote - _stringNotes[curStr] + 12) % 12;
+            Debug.LogFormat(@"String {0}, trying to play {1}, fret {2}", _stringNotes[curStr], notesNeeded[0], fret);
+            if (fret != 0)
+                FretSelectables[6 * (fret - 1) + curStr].OnInteract();
+            yield return new WaitForSeconds(.1f);
+            curStr++;
+            notesNeeded.RemoveAt(0);
+        }
+
+        for (; curStr < 6; curStr++)
+        {
+            MuteSelectables[curStr].OnInteract();
+            yield return new WaitForSeconds(.1f);
+        }
+
+        PlayButton.OnInteract();
+        yield return new WaitForSeconds(.1f);
     }
 }
